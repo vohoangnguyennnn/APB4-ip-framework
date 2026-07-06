@@ -1,6 +1,6 @@
 interface apb_if #(
-  parameter ADDR_WIDTH = 32,
-  parameter DATA_WIDTH = 32
+  parameter int ADDR_WIDTH = 32,
+  parameter int DATA_WIDTH = 32
 )(
   input logic PCLK,
   input logic PRESETn
@@ -25,34 +25,14 @@ interface apb_if #(
   logic PSLVERR;
 
   initial begin
-    if (DATA_WIDTH % 8 != 0 || DATA_WIDTH <= 0) begin
-      $error("APB ADDR_WIDTH error");
-      end
+    if (!(DATA_WIDTH == 8 || DATA_WIDTH == 16 || DATA_WIDTH == 32)) begin
+      $error("APB DATA_WIDTH must be 8, 16, or 32 bits");
+    end
 
     if (ADDR_WIDTH <= 0) begin
-      $error("APB DATA_WIDTH error");
-      end
+      $error("APB ADDR_WIDTH must be greater than zero");
+    end
   end
-
-  function automatic logic setup_phase();
-    return (PSEL && !PENABLE);
-  endfunction
-
-  function automatic logic access_phase();
-    return (PSEL && PENABLE);
-  endfunction
-
-  function automatic logic transfer_done();
-    return (PSEL && PENABLE && PREADY);
-  endfunction
-
-  function automatic logic transfer_error();
-    return (PSEL && PENABLE && PSLVERR);
-  endfunction
-
-  function automatic logic read_done();
-    return (PSEL && PENABLE && PREADY && !PWRITE);
-  endfunction
 
   modport requester (
     input PCLK,
