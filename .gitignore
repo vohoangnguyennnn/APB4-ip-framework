@@ -1,0 +1,59 @@
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Simulation outputs
+*.vcd
+*.fst
+*.fsdb
+*.wlf
+*.vpd
+*.ghw
+*.saif
+*.log
+*.jou
+*.pb
+transcript
+
+# Icarus Verilog
+*.vvp
+a.out
+
+# Verilator
+obj_dir/
+verilator_coverage.dat
+
+# Synopsys VCS
+csrc/
+simv
+simv.daidir/
+ucli.key
+DVEfiles/
+
+# Siemens Questa/ModelSim
+work/
+vsim.wlf
+modelsim.ini
+
+# Cadence Xcelium/Incisive
+xcelium.d/
+INCA_libs/
+irun.history
+xrun.history
+
+# Generic build/scratch directories
+build/
+out/
+waves/
+coverage/
+reports/
+tmp/
+*.tmp
+
+# Keep placeholder files for empty project folders
+!.gitkeep
