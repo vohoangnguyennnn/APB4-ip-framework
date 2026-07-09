@@ -19,7 +19,7 @@ module apb_gpio #(
   inout tri [GPIO_WIDTH-1:0] gpio_pins
 );
 
-  localparam int NUM_REGS = 4;
+  localparam int NUM_REGS = 3;
   localparam int REG_ADDR_WIDTH = $clog2(NUM_REGS);
 
   localparam logic [REG_ADDR_WIDTH-1:0] REG_DIR = 'd0;
