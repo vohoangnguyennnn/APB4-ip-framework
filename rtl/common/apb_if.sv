@@ -32,6 +32,10 @@ interface apb_if #(
     if (ADDR_WIDTH <= 0) begin
       $error("APB ADDR_WIDTH must be greater than zero");
     end
+
+    if (ADDR_WIDTH > 32) begin
+      $error("APB ADDR_WIDTH must be 32 bits or less");
+    end
   end
 
   modport requester (

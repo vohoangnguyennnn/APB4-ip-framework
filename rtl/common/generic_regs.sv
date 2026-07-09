@@ -38,6 +38,10 @@ module generic_regs #(
       $error("ADDR_WIDTH must be greater than zero");
     end
 
+    if (ADDR_WIDTH > 32) begin
+      $error("APB ADDR_WIDTH must be 32 bits or less");
+    end
+
     if (!(DATA_WIDTH == 8 || DATA_WIDTH == 16 || DATA_WIDTH == 32)) begin
       $error("DATA_WIDTH must be 8, 16, or 32 bits");
     end
@@ -100,6 +104,7 @@ module generic_regs #(
     end
   endgenerate
 
+  // reg_rdata must reflect the current selected register value for sparse writes.
   assign reg_wdata = (reg_rdata & ~wstrb_mask) | (apb.PWDATA & wstrb_mask);
   assign reg_wstrb = apb.PSTRB;
   assign reg_pprot = apb.PPROT;
