@@ -10,3 +10,4 @@ rtl/gpio/gpio_core.sv
 rtl/gpio/apb_gpio.sv
 rtl/timer/timer_core.sv
 rtl/timer/apb_timer.sv
+rtl/apb_subsystem.sv
