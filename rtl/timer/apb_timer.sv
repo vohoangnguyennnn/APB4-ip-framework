@@ -2,8 +2,7 @@ module apb_timer #(
   parameter int ADDR_WIDTH      = 12,
   parameter int DATA_WIDTH      = 32,
   parameter int NUM_REGS        = 3,
-  parameter int APB_WAIT_CYCLES = 0,
-  parameter int IRQ_WIDTH       = 2 
+  parameter int APB_WAIT_CYCLES = 0
 )(
   input  logic PCLK,
   input  logic PRESETn,
@@ -17,7 +16,7 @@ module apb_timer #(
   output logic [DATA_WIDTH-1:0]     PRDATA,
   output logic                      PREADY,
   output logic                      PSLVERR,
-  output logic [IRQ_WIDTH-1:0]      irq_o
+  output logic [1:0]                irq_o
 );
 
   logic [DATA_WIDTH-1:0]       reg_wdata;
@@ -62,6 +61,7 @@ module apb_timer #(
   );
 
   timer_core #(
+    .DATA_WIDTH (DATA_WIDTH),
     .NUM_REGS (NUM_REGS)
   ) u_core (
     .clk         (apb.PCLK),
