@@ -48,36 +48,36 @@ module apb_subsystem #(
 
   initial begin
     if (ADDR_WIDTH <= 0) begin
-      $error("ADDR_WIDTH must be greater than zero");
+      $fatal(1, "ADDR_WIDTH must be greater than zero");
     end
 
     if (ADDR_WIDTH > 32) begin
-      $error("ADDR_WIDTH must be 32 bits or less");
+      $fatal(1, "ADDR_WIDTH must be 32 bits or less");
     end
 
     if (SLAVE_ADDR_WIDTH <= 0) begin
-      $error("SLAVE_ADDR_WIDTH must be greater than zero");
+      $fatal(1, "SLAVE_ADDR_WIDTH must be greater than zero");
     end
 
-    if (SLAVE_ADDR_WIDTH > ADDR_WIDTH) begin
-      $error("SLAVE_ADDR_WIDTH must be less than or equal to ADDR_WIDTH");
+    if (SLAVE_ADDR_WIDTH >= ADDR_WIDTH) begin
+      $fatal(1, "SLAVE_ADDR_WIDTH must be strictly less than ADDR_WIDTH");
     end
 
     if (!(DATA_WIDTH == 8 || DATA_WIDTH == 16 || DATA_WIDTH == 32)) begin
-      $error("DATA_WIDTH must be 8, 16, or 32 bits");
+      $fatal(1, "DATA_WIDTH must be 8, 16, or 32 bits");
     end
 
     if ((GPIO_BASE_ADDR & SLAVE_ADDR_MASK) ==
         (TIMER_BASE_ADDR & SLAVE_ADDR_MASK)) begin
-      $error("GPIO and TIMER address windows must not overlap");
+      $fatal(1, "GPIO and TIMER address windows must not overlap");
     end
 
     if ((GPIO_BASE_ADDR & SLAVE_OFFSET_MASK) != '0) begin
-      $error("GPIO_BASE_ADDR must be aligned to the APB slave address window");
+      $fatal(1, "GPIO_BASE_ADDR must be aligned to the APB slave address window");
     end
 
     if ((TIMER_BASE_ADDR & SLAVE_OFFSET_MASK) != '0) begin
-      $error("TIMER_BASE_ADDR must be aligned to the APB slave address window");
+      $fatal(1, "TIMER_BASE_ADDR must be aligned to the APB slave address window");
     end
   end
 
