@@ -35,23 +35,23 @@ module generic_regs #(
 
   initial begin
     if (ADDR_WIDTH <= 0) begin
-      $error("ADDR_WIDTH must be greater than zero");
+      $fatal(1, "ADDR_WIDTH must be greater than zero");
     end
 
     if (ADDR_WIDTH > 32) begin
-      $error("APB ADDR_WIDTH must be 32 bits or less");
+      $fatal(1, "APB ADDR_WIDTH must be 32 bits or less");
     end
 
     if (!(DATA_WIDTH == 8 || DATA_WIDTH == 16 || DATA_WIDTH == 32)) begin
-      $error("DATA_WIDTH must be 8, 16, or 32 bits");
+      $fatal(1, "DATA_WIDTH must be 8, 16, or 32 bits");
     end
 
     if (NUM_REGS <= 0) begin
-      $error("NUM_REGS must be greater than zero");
+      $fatal(1, "NUM_REGS must be greater than zero");
     end
 
     if (WAIT_CYCLES < 0) begin
-      $error("WAIT_CYCLES must be greater than or equal to zero");
+      $fatal(1, "WAIT_CYCLES must be greater than or equal to zero");
     end
   end
 
@@ -81,7 +81,17 @@ module generic_regs #(
   end
 
   assign wait_req = access_phase && (wait_count_q != '0);
+  // Extra protocol-compliance check beyond the mandatory spec requirement.
+  // Per APB4 spec (ARM IHI 0024E, section 3.2): "For read transfers, the
+  // Requester must drive all bits of PSTRB LOW." The spec places this
+  // obligation on the Requester; it does not require the Completer to
+  // detect a violation. This check is a deliberate, stricter addition.
   assign read_strobe_error = !apb.PWRITE && (apb.PSTRB != '0);
+  // Design choice: report PSLVERR on unaligned PADDR. Per APB4 spec
+  // (ARM IHI 0024E, section 2.1.1), unaligned PADDR is permitted and the
+  // resulting Completer behavior is UNPREDICTABLE by design — using the
+  // unaligned address, the aligned address, or signaling an error are all
+  // spec-compliant options. This design signals an error.
   assign invalid_access = !aligned_addr || !addr_in_range || read_strobe_error;
 
   apb_slave_ctrl u_ctrl (
