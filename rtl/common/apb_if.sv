@@ -26,15 +26,15 @@ interface apb_if #(
 
   initial begin
     if (!(DATA_WIDTH == 8 || DATA_WIDTH == 16 || DATA_WIDTH == 32)) begin
-      $error("APB DATA_WIDTH must be 8, 16, or 32 bits");
+      $fatal(1, "APB DATA_WIDTH must be 8, 16, or 32 bits");
     end
 
     if (ADDR_WIDTH <= 0) begin
-      $error("APB ADDR_WIDTH must be greater than zero");
+      $fatal(1, "APB ADDR_WIDTH must be greater than zero");
     end
 
     if (ADDR_WIDTH > 32) begin
-      $error("APB ADDR_WIDTH must be 32 bits or less");
+      $fatal(1, "APB ADDR_WIDTH must be 32 bits or less");
     end
   end
 
