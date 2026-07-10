@@ -43,11 +43,11 @@ module timer_core #(
 
   initial begin
     if (!(DATA_WIDTH == 8 || DATA_WIDTH == 16 || DATA_WIDTH == 32)) begin
-      $error("DATA_WIDTH must be 8, 16, or 32 bits");
+      $fatal(1, "DATA_WIDTH must be 8, 16, or 32 bits");
     end
 
     if (NUM_REGS != 3) begin
-      $error("timer_core expects exactly 3 registers");
+      $fatal(1, "timer_core expects exactly 3 registers");
     end
   end
 
@@ -70,6 +70,10 @@ module timer_core #(
     if (reg_wr_en && reg_waddr == ADDR_TIMER_L) begin
       timer_d = reg_wdata;
     end
+    // Deliberate side effect: writing the CMP register also resets the
+    // running timer count to 0. This is internal peripheral behavior
+    // (outside APB protocol scope) and must be documented for software
+    // drivers, since it is not implied by the register name alone.
     else if ((reg_wr_en && reg_waddr == ADDR_CMP_L) || irq_overflow || irq_compare) begin
       timer_d = '0;
     end
