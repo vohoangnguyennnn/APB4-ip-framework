@@ -60,7 +60,9 @@ module apb_gpio #(
     .apb(apb),
     .reg_wdata(reg_wdata),
     .reg_wstrb(),
-    .reg_pprot(),
+    .reg_pprot(),  // Intentionally unused: this peripheral implements no
+                   // protection unit. Per APB4 spec (ARM IHI 0024E, Table 3-3),
+                   // a Completer without access protection may ignore PPROT.
     .reg_waddr(reg_waddr),
     .reg_wr_en(reg_wr_en),
     .reg_raddr(reg_raddr),
@@ -73,7 +75,7 @@ module apb_gpio #(
 
   initial begin
     if (GPIO_WIDTH > DATA_WIDTH) begin
-      $error("GPIO_WIDTH must be less than or equal to DATA_WIDTH");
+      $fatal(1, "GPIO_WIDTH must be less than or equal to DATA_WIDTH");
     end
   end
 
