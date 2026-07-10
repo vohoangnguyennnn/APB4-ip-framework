@@ -1,7 +1,7 @@
 module apb_timer #(
   parameter int ADDR_WIDTH      = 12,
   parameter int DATA_WIDTH      = 32,
-  parameter int NUM_REGS        = 3,
+  parameter int NUM_REGS        = 5,
   parameter int APB_WAIT_CYCLES = 0
 )(
   input  logic PCLK,

@@ -116,7 +116,7 @@ module apb_subsystem #(
   apb_timer #(
     .ADDR_WIDTH      (SLAVE_ADDR_WIDTH),
     .DATA_WIDTH      (DATA_WIDTH),
-    .NUM_REGS        (3),
+    .NUM_REGS        (5),
     .APB_WAIT_CYCLES (TIMER_WAIT_CYCLES)
   ) u_timer (
     .PCLK    (PCLK),
