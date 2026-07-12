@@ -24,6 +24,7 @@ module apb_timer #(
   logic                        reg_wr_en;
   logic [$clog2(NUM_REGS)-1:0] reg_raddr;
   logic [DATA_WIDTH-1:0]       reg_rdata;
+  logic [(DATA_WIDTH/8)-1:0] reg_wstrb;
 
   apb_if #(
     .ADDR_WIDTH(ADDR_WIDTH),
@@ -52,7 +53,7 @@ module apb_timer #(
   ) u_regs (
     .apb       (apb),
     .reg_wdata (reg_wdata),
-    .reg_wstrb (),
+    .reg_wstrb (reg_wstrb),
     .reg_pprot (),  // Intentionally unused: this peripheral implements no
                     // protection unit. Per APB4 spec (ARM IHI 0024E, Table 3-3),
                     // a Completer without access protection may ignore PPROT.
@@ -71,6 +72,7 @@ module apb_timer #(
     .reg_wr_en   (reg_wr_en),
     .reg_waddr   (reg_waddr),
     .reg_wdata   (reg_wdata),
+    .reg_wstrb   (reg_wstrb),
     .reg_raddr   (reg_raddr),
     .reg_rdata   (reg_rdata),
     .irq_overflow (irq_o[1]),

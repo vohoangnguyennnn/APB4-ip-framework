@@ -8,7 +8,7 @@ module timer_core #(
   input  logic                        reg_wr_en,
   input  logic [$clog2(NUM_REGS)-1:0] reg_waddr,
   input  logic [DATA_WIDTH-1:0]       reg_wdata,
-
+  input  logic [(DATA_WIDTH/8)-1:0]   reg_wstrb,
   input  logic [$clog2(NUM_REGS)-1:0] reg_raddr,
   output logic [DATA_WIDTH-1:0]       reg_rdata,
 
@@ -96,7 +96,7 @@ module timer_core #(
     end
 
     // IRQ logic
-    if (reg_wr_en && reg_waddr == ADDR_STATUS_L) begin
+    if (reg_wr_en && reg_waddr == ADDR_STATUS_L && reg_wstrb[0]) begin
       irq_status_d = irq_status_d & ~reg_wdata[1:0]; //W1C
     end
     if (compare_event) begin
